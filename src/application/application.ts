@@ -3,12 +3,38 @@ import { SettingsPage } from './settingsPage';
 import { StartPage } from './startPage';
 import { CategoriesPage } from './categoriesPage';
 import { GameFieldPage } from './gameFieldPage';
+import { GameOverPage } from './gameOverPage';
 
 export class Application extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode);
     this.mainCycle();
   }
+  private gameCycle(gameName: string, categoryIndex: number) {
+    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex });
+        gameField.onHome = () => {
+          gameField.destroy();
+          this.mainCycle();
+        }
+        gameField.onBack = () => {
+          gameField.destroy();
+          this.categoryCycle(gameName);
+      }
+      gameField.onFinish = (result) => {
+        gameField.destroy();
+        const gameOverPage = new GameOverPage(this.node, result);
+        gameOverPage.onHome = () => {
+          gameOverPage.destroy();
+          this.mainCycle();
+        }
+        gameOverPage.onNext = () => {
+          gameOverPage.destroy();
+          this.gameCycle(gameName, categoryIndex + 1);
+        }
+      }
+    
+  };
+
   private categoryCycle(gameName: string) {
     const categories = new CategoriesPage(this.node, gameName);
       categories.onBack = () => {
@@ -17,17 +43,8 @@ export class Application extends Control {
       }
     categories.onSelect = (index) => {
       categories.destroy();
-        const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: index });
-        gameField.onHome = () => {
-          gameField.destroy();
-          this.mainCycle();
-        }
-        gameField.onBack = () => {
-          gameField.destroy();
-          this.categoryCycle(gameName);
-        }
-      }
-
+      this.gameCycle(gameName, index)   
+    }
   }
   private mainCycle() {
     const startPage = new StartPage(this.node);
