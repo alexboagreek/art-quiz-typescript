@@ -14,7 +14,7 @@ export class GameFieldPage extends Control {
       const question = new Control(this.node, 'div', '', 'Вопрос?');
       const answerButtons = questionData.answers.map((it, i) => {
         const button = new Control(this.node, 'button', '', i.toString());
-        button.node.onclick = () => {
+        button.node.onclick = (i) => {
           this.onAnswer(i);
         }
 
