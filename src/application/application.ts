@@ -6,5 +6,9 @@ export class Application extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode);
     const startPage = new StartPage(this.node);
+    startPage.onSettings = () => {
+      startPage.destroy();
+      const settingsPage = new SettingsPage(this.node);
+    }
   }
 }
