@@ -12,7 +12,12 @@ export class Application extends Control {
   private mainCycle() {
     const startPage = new StartPage(this.node);
     startPage.onGameSelect = () => {
+      startPage.destroy();
       const categories = new CategoriesPage(this.node);
+      categories.onBack = () => {
+        categories.destroy();
+        this.mainCycle();
+      }
     }
 
     startPage.onSettings = () => {
