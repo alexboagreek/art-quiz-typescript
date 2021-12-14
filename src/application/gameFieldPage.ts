@@ -13,6 +13,7 @@ export class GameFieldPage extends Control {
   onBack: () => void;
   onHome: () => void;
   onFinish: (result: IQuizResult) => void;
+  progressIndicator: Control<HTMLElement>;
   constructor(parentNode: HTMLElement, gameOptions: IQuizOptions) {
 
     super(parentNode);
@@ -27,6 +28,9 @@ export class GameFieldPage extends Control {
     homeButton.node.onclick = () => {
       this.onHome();
     }
+
+    this.progressIndicator = new Control(this.node, 'div', '', '');
+    
     //fake ArrayQuestion
     const questions: Array<IArtistQuestionData> = [{ answers: [1, 2, 3, 4] }, { answers: [1, 2, 3, 4] }, { answers: [1, 2, 3, 4] }];
     this.questionCycle(questions, 0, () => {
@@ -44,10 +48,11 @@ export class GameFieldPage extends Control {
       onFinish();
       return;
     }
+    this.progressIndicator.node.textContent = `${index+1} / ${questions.length}`;
     const question = new ArtistQuestionView(this.node, questions[index]);
     question.onAnswer = answerIndex => {
       question.destroy();
-      this.questionCycle(questions, index + 1, onFinish);
+      this.questionCycle(questions, index+1, onFinish);
     };
     
   }
