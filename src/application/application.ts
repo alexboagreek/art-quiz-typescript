@@ -15,12 +15,15 @@ export class Application extends Control {
         categories.destroy();
         this.mainCycle();
       }
-      categories.onSelect = (index) => {
+    categories.onSelect = (index) => {
+      categories.destroy();
         const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: index });
         gameField.onHome = () => {
+          gameField.destroy();
           this.mainCycle();
         }
         gameField.onBack = () => {
+          gameField.destroy();
           this.categoryCycle(gameName);
         }
       }
