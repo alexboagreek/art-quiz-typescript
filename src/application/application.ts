@@ -2,6 +2,7 @@ import Control from "../common/control";
 import { SettingsPage } from './settingsPage';
 import { StartPage } from './startPage';
 import { CategoriesPage } from './categoriesPage';
+import { GameFieldPage } from './gameFieldPage';
 
 export class Application extends Control {
   constructor(parentNode: HTMLElement) {
@@ -11,12 +12,15 @@ export class Application extends Control {
   }
   private mainCycle() {
     const startPage = new StartPage(this.node);
-    startPage.onGameSelect = () => {
+    startPage.onGameSelect = (gameName) => {
       startPage.destroy();
       const categories = new CategoriesPage(this.node);
       categories.onBack = () => {
         categories.destroy();
         this.mainCycle();
+      }
+      categories.onSelect = (index) => {
+        const gameField = new GameFieldPage(this.node);
       }
     }
 
