@@ -8,20 +8,29 @@ export class Application extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode);
     this.mainCycle();
-    
   }
-  private mainCycle() {
-    const startPage = new StartPage(this.node);
-    startPage.onGameSelect = (gameName) => {
-      startPage.destroy();
-      const categories = new CategoriesPage(this.node);
+  private categoryCycle(gameName: string) {
+    const categories = new CategoriesPage(this.node, gameName);
       categories.onBack = () => {
         categories.destroy();
         this.mainCycle();
       }
       categories.onSelect = (index) => {
-        const gameField = new GameFieldPage(this.node);
+        const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: index });
+        gameField.onHome = () => {
+          this.mainCycle();
+        }
+        gameField.onBack = () => {
+          this.categoryCycle(gameName);
+        }
       }
+
+  }
+  private mainCycle() {
+    const startPage = new StartPage(this.node);
+    startPage.onGameSelect = (gameName) => {
+      startPage.destroy();
+      this.categoryCycle(gameName); 
     }
 
     startPage.onSettings = () => {
