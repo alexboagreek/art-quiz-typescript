@@ -28,19 +28,26 @@ export class GameFieldPage extends Control {
       this.onHome();
     }
     //fake ArrayQuestion
-    const questions: Array<IArtistQuestionData> = [];
-
-    const question = new ArtistQuestionView(this.node, questions[0]);
-    
-    const finishButton = new Control(this.node, 'button', '', 'finish');
-    finishButton.node.onclick = () => {
+    const questions: Array<IArtistQuestionData> = [{ answers: [1, 2, 3, 4] }, { answers: [1, 2, 3, 4] }, { answers: [1, 2, 3, 4] }];
+    this.questionCycle(questions, 0, () => {
       this.onFinish({});
-    }
+    });
+    
+    // const finishButton = new Control(this.node, 'button', '', 'finish');
+    // finishButton.node.onclick = () => {
+    //   this.onFinish({});
+    // }
   }
-  questionCycle(questions:Array<IArtistQuestionData>, index: number) {
+
+  questionCycle(questions: Array<IArtistQuestionData>, index: number, onFinish: () => void) {
+    if (index >= questions.length) {
+      onFinish();
+      return;
+    }
     const question = new ArtistQuestionView(this.node, questions[index]);
     question.onAnswer = answerIndex => {
-      this.questionCycle(questions, index + 1);
+      question.destroy();
+      this.questionCycle(questions, index + 1, onFinish);
     };
     
   }
