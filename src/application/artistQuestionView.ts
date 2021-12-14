@@ -1,20 +1,17 @@
-
 import Control from "../common/control";
-interface IArtistsQuestionData {
-  answers: Array<any>
+import { IArtistQuestionData }  from './IArtistQuestionView';
 
-}
-
-export class GameFieldPage extends Control {
+export class ArtistQuestionView extends Control {
     onAnswer: (index:number)=> void;
   
-    constructor(parentNode: HTMLElement, questionData: IArtistsQuestionData) {
+    constructor(parentNode: HTMLElement, questionData: IArtistQuestionData) {
       super(parentNode);
       
       const question = new Control(this.node, 'div', '', 'Вопрос?');
+
       const answerButtons = questionData.answers.map((it, i) => {
         const button = new Control(this.node, 'button', '', i.toString());
-        button.node.onclick = (i) => {
+        button.node.onclick = () => {
           this.onAnswer(i);
         }
 
