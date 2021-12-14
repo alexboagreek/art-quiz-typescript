@@ -17,7 +17,7 @@ export class SettingsPage extends Control {
 
     }
     const saveButton = new Control(this.node, 'button', '', 'save');
-    backButton.node.onclick = () => {
+    saveButton.node.onclick = () => {
       this.onSave(settings);
     }
   }
