@@ -84,3 +84,7 @@ export class GameFieldPage extends Control {
     
   }
 }
+
+function gameName(gameOptions: IQuizOptions, gameName: any, questions: IArtistQuestionData[], arg3: number, arg4: () => void) {
+  throw new Error("Function not implemented.");
+}
