@@ -20,17 +20,28 @@ interface IImageDto {
   author: IMultiLangString,
 
 }
+export interface IArtistsQuestionData {
+  answers: string[];
+  correctAnswerIndex: number;
+  artistsImgUrl: string;
+}
+export interface IPicturesQuestionData {
+  answers: string[];
+  correctAnswerIndex: number;
+  artistsImgUrl: string;
+}
 type IImagesDto = Record<string, IImageDto>
 
 export interface ICategoryData {
   name: string;
   picture: string;
-  score?: Array<boolean> 
+  score?: Array<boolean>;
 
 }
 
 
 export class QuizDataModel {
+  private questionsPerCategory = 10;
   data: Array<IPictureData>;
 
   constructor() {
@@ -41,11 +52,11 @@ export class QuizDataModel {
     return this;
   }
   public getCategoriesData() {
-    const questionsPerCategory = 10;
+    const questionsPerCategory = this.questionsPerCategory;
     const categoriesCount = Math.floor(this.data.length / questionsPerCategory);
     const categories: Array<ICategoryData> = [];
     for (let i = 0; i < categoriesCount; i++) {
-      const pictureUrl = `./public/img/pictures/${i}.jpg`;
+      const pictureUrl = `./public/img/pictures/${i*questionsPerCategory}.jpg`;
       const categoryData: ICategoryData = {
         name: i.toString(),
         picture: pictureUrl,
@@ -55,7 +66,39 @@ export class QuizDataModel {
     }
     return categories;
   }
+  public getPicturesQuestions(categoryIndex: number) {
+    const questionsPerCategory = this.questionsPerCategory;
+    const result: Array<IPicturesQuestionData> = [];
 
+    for (let i = categoryIndex * questionsPerCategory; i < categoryIndex * (questionsPerCategory + 1); i++) {
+
+      const answers: Array<string> = []; 
+      const answersCount = 4;
+      const correctAnswersIndex = Math.floor(Math.random() * answersCount);
+      const correctAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
+      for (let j = 0; j < answersCount; j++){
+        if (correctAnswerIndex == j) {
+          answers.push(correctAnswer)
+        } else {
+          const randomImage = this.data[Math.floor(Math.random() * this.data.length)].picture;
+          const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
+          answers.push(variantUrl);
+        }
+      }
+      const question: IPicturesQuestionData = {
+
+        artistName: this.data[i].author.en,
+        answers: answers,
+        correctAnswerIndex: correctAnswersIndex
+       
+        }
+    }
+
+
+  }
+  public getArtistsQuestions() {
+
+  }
   private loadImagesData(url:string): Promise<Array<IPictureData>>{
     return fetch(url).then(res => res.json()).then((imagesData: IImageDto) => {
 
