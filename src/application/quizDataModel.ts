@@ -22,7 +22,12 @@ interface IImageDto {
 }
 type IImagesDto = Record<string, IImageDto>
 
+export interface ICategoryData {
+  name: string;
+  picture: string;
+  score?: Array<boolean> 
 
+}
 
 
 export class QuizDataModel {
@@ -35,7 +40,21 @@ export class QuizDataModel {
     this.data = await this.loadImagesData(imagesDataUrl);
     return this;
   }
-
+  public getCategoriesData() {
+    const questionsPerCategory = 10;
+    const categoriesCount = Math.floor(this.data.length / questionsPerCategory);
+    const categories: Array<ICategoryData> = [];
+    for (let i = 0; i < categoriesCount; i++) {
+      const pictureUrl = `./public/img/pictures/${i}.jpg`;
+      const categoryData: ICategoryData = {
+        name: i.toString(),
+        picture: pictureUrl,
+        score: new Array(categoriesCount).fill(false)
+      }
+      categories.push(categoryData);
+    }
+    return categories;
+  }
 
   private loadImagesData(url:string): Promise<Array<IPictureData>>{
     return fetch(url).then(res => res.json()).then((imagesData: IImageDto) => {
