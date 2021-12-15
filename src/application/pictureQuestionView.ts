@@ -1,24 +1,21 @@
 import Control from "../common/control";
+import { IArtistQuestionData }  from './IArtistQuestionView';
 
-export class CategoriesPage extends Control {
-  onBack: ()=>void;
-  onSelect: (index: number) => void;
-
-    constructor(parentNode: HTMLElement, gameName: string) {
+export class PictureQuestionView extends Control {
+    onAnswer: (index:number)=> void;
+  
+    constructor(parentNode: HTMLElement, questionData: IArtistQuestionData) {
       super(parentNode);
-      const header = new Control(this.node, 'h1', '', gameName);
-      const backButton = new Control(this.node, 'button', '', 'back');
-      backButton.node.onclick = () => {
-        this.onBack();
-      }
+      
+      const question = new Control(this.node, 'div', '', 'Вопрос?');
 
-      const categoriesList = [1, 2, 3, 4, 5, 6, 7];
-      const categoryButtons = categoriesList.map((it, i) => {
-        const button = new Control(this.node, 'button', '', it.toString());
+      const answerButtons = questionData.answers.map((it, i) => {
+        const button = new Control(this.node, 'button', '', i.toString());
         button.node.onclick = () => {
-          this.onSelect(i);
+          this.onAnswer(i);
         }
-        return button;
-    }); 
-  } 
-}
+
+      });
+      
+    } 
+} 
