@@ -43,7 +43,7 @@ export class GameFieldPage extends Control {
     this.results = [];
     
     this.questionCycle(gameOptions.gameName, questionsData, 0, () => {
-      this.onFinish(this.results);
+      this.onFinish(this.results); 
     });
     
     // const finishButton = new Control(this.node, 'button', '', 'finish');

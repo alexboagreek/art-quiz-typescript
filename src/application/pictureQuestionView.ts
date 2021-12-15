@@ -1,10 +1,10 @@
 import Control from "../common/control";
-import { IArtistQuestionData }  from './IArtistQuestionView';
+import { IArtistsQuestionData, IPicturesQuestionData}  from './quizDataModel';
 
 export class PictureQuestionView extends Control {
     onAnswer: (index:number)=> void;
   
-    constructor(parentNode: HTMLElement, questionData: IArtistQuestionData) {
+    constructor(parentNode: HTMLElement, questionData: IPicturesQuestionData) {
       super(parentNode);
       
       const question = new Control(this.node, 'div', '', 'Вопрос?');

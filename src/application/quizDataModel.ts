@@ -91,9 +91,10 @@ export class QuizDataModel {
         answers: answers,
         correctAnswerIndex: correctAnswersIndex
        
-        }
+      }
+      result.push(question);
     }
-
+    return result;
 
   }
   public getArtistsQuestions() {
