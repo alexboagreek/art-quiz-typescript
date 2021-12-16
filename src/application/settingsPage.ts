@@ -5,6 +5,18 @@ interface IQuizSettings {
   time: number;
   timeEnable: boolean;
 }
+export class SettingsModel {
+  
+  settings: IQuizSettings;
+  constructor() {
+
+  }
+
+  loadFromStorage() {
+    const data = JSON.parse(localStorage.getItem('settings'));
+  }
+
+}
 export class SettingsPage extends Control {
   onBack: () => void;
   onSave: (settings: IQuizSettings) => void;
@@ -13,7 +25,7 @@ export class SettingsPage extends Control {
     super(parentNode);
 
     const settings: IQuizSettings = initialSettings;
-    
+
 
 
 
@@ -30,6 +42,7 @@ export class SettingsPage extends Control {
 
     const timeCheck = new Control<HTMLInputElement>(this.node, 'input');
     timeCheck.node.type = 'checkbox';
+    timeCheck.node.checked = settings.timeEnable;
     timeCheck.node.oninput = () => {
       settings.timeEnable = timeCheck.node.checked;
     }
