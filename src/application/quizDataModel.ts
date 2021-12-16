@@ -141,7 +141,7 @@ export class QuizDataModel {
         return record;
       });
       return modelData;
-    })
+    });
   }
 
 }
