@@ -22,7 +22,17 @@ export class Application extends Control {
    
   }
   private gameCycle(gameName: string, categoryIndex: number) {
-    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, this.model.getPicturesQuestions(categoryIndex));
+    let questions: Array<any>;
+    if (gameName == 'artists') {
+      questions = this.model.getArtistsQuestions(categoryIndex);
+      
+    } else if (gameName == 'pictures') {
+     
+      
+    } else {
+      throw new Error('game type is not find');
+    }
+    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, );
         gameField.onHome = () => {
           gameField.destroy();
           this.mainCycle();

@@ -20,7 +20,7 @@ export class GameFieldPage extends Control {
   results: IQuizResults;
   answersIndicator: Control<HTMLElement>;
 
-  constructor(parentNode: HTMLElement, gameOptions: IQuizOptions, questionsData: Array<IArtistQuestionData | IPicturesQuestionData> ) {
+  constructor(parentNode: HTMLElement, gameOptions: IQuizOptions, questionsData: Array<IArtistsQuestionData | IPicturesQuestionData> ) {
 
     super(parentNode);
     // console.log(gameOptions);
@@ -87,6 +87,6 @@ export class GameFieldPage extends Control {
   }
 }
 
-function gameName(gameOptions: IQuizOptions, gameName: any, questions: IArtistQuestionData[], arg3: number, arg4: () => void) {
+function gameName(gameOptions: IQuizOptions, gameName: any, questions: IArtistsQuestionData[], arg3: number, arg4: () => void) {
   throw new Error("Function not implemented.");
 }

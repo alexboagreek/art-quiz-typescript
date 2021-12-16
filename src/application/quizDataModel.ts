@@ -6,7 +6,6 @@ interface IMultiLangString {
   en: string
 }
 
-
 interface IPictureData {
   year: number,
   picture: number,
@@ -70,7 +69,7 @@ export class QuizDataModel {
     const questionsPerCategory = this.questionsPerCategory;
     const result: Array<IPicturesQuestionData> = [];
 
-    for (let i = categoryIndex * questionsPerCategory; i < categoryIndex * (questionsPerCategory + 1); i++) {
+    for (let i = categoryIndex * questionsPerCategory; i < (categoryIndex + 1) * (questionsPerCategory); i++) {
 
       const answers: Array<string> = []; 
       const answersCount = 4;
@@ -97,7 +96,34 @@ export class QuizDataModel {
     return result;
 
   }
-  public getArtistsQuestions() {
+  public gеtArtistsQuestions(categoryIndex: number) {
+    const questionsPerCategory = this.questionsPerCategory;
+    const result: Array<IArtistsQuestionData> = [];
+
+    for (let i = categoryIndex * questionsPerCategory; i < (categoryIndex + 1) * (questionsPerCategory); i++) {
+
+      const answers: Array<string> = []; 
+      const answersCount = 4;
+      const correctAnswersIndex = Math.floor(Math.random() * answersCount);
+      const correctAnswer = this.data[i].author.en;                                                
+        if (correctAnswerIndex == j) {
+          answers.push(correctAnswer)
+        } else {
+          const randomName = this.data[Math.floor(Math.random() * this.data.length)].author;
+          const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
+          answers.push(randomName.en);
+        }
+      }
+      const question: IArtistsQuestionData = {
+
+        artistImgUrl:`./public/img/pictures/${this.data[i].picture}.jpg`;
+        answers: answers,
+        correctAnswerIndex: correctAnswersIndex
+       
+      }
+      result.push(question);
+    }
+    return result;
 
   }
   private loadImagesData(url:string): Promise<Array<IPictureData>>{
