@@ -1,5 +1,4 @@
-
-export interface IArtistQuestionData{
+export interface IArtistQuestionData {
   answers: Array<any>;
   correctAnswerIndex: number;
 }

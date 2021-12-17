@@ -5,13 +5,13 @@ export interface IQuizSettings {
   time: number;
   timeEnable: boolean;
 }
+
 const defaultSettings: IQuizSettings = {
   time: 10,
   timeEnable: false
-  
 }
+
 export class SettingsModel {
-  
   private settings: IQuizSettings;
 
   constructor() {
@@ -56,15 +56,12 @@ export class SettingsPage extends Control {
     const settings: IQuizSettings = initialSettings;
 
 
-
-
     const timeInput = new Control<HTMLInputElement>(this.node, 'input', '');
     timeInput.node.type = 'range';
     timeInput.node.min = 10..toString();
     timeInput.node.max = 30..toString();
     timeInput.node.step = 1..toString();
     timeInput.node.value = settings.time.toString();
-
     timeInput.node.oninput = () => {
       settings.time = timeInput.node.valueAsNumber;
     }
@@ -75,7 +72,6 @@ export class SettingsPage extends Control {
     timeCheck.node.oninput = () => {
       settings.timeEnable = timeCheck.node.checked;
     }
-
 
     const backButton = new Control(this.node, 'button', '', 'back');
     backButton.node.onclick = () => {

@@ -1,61 +1,64 @@
 import imagesDataUrl from '../assets/json/images.json';
 
-
-interface IMultiLangString {
+interface IMultiLangString{
   ru: string,
-  en: string
+  en: string 
 }
 
-interface IPictureData {
+interface IPictureData{
   year: number,
   picture: number,
   author: IMultiLangString,
   name: IMultiLangString
 }
 
-interface IImageDto {
+interface IImageDto{
   year: string,
   picture: string,
   author: IMultiLangString,
-
+  name: IMultiLangString
 }
-export interface IArtistsQuestionData {
+
+export interface IArtistsQuestionData{
   answers: string[];
   correctAnswerIndex: number;
-  artistsImgUrl: string;
+  artistImgUrl: string;
 }
-export interface IPicturesQuestionData {
+
+export interface IPicturesQuestionData{
   answers: string[];
   correctAnswerIndex: number;
-  artistsImgUrl: string;
+  artistName: string;
 }
-type IImagesDto = Record<string, IImageDto>
 
-export interface ICategoryData {
+
+export interface ICategoryData{
   name: string;
   picture: string;
   score?: Array<boolean>;
-
 }
 
+type IImagesDto = Record<string, IImageDto>
 
-export class QuizDataModel {
+export class QuizDataModel{
   private questionsPerCategory = 10;
   data: Array<IPictureData>;
 
-  constructor() {
-    
+  constructor(){
+
   }
-  public async build() {
+
+  public async build(){
     this.data = await this.loadImagesData(imagesDataUrl);
     return this;
   }
-  public getCategoriesData() {
+
+  public getCategoriesData(){
     const questionsPerCategory = this.questionsPerCategory;
     const categoriesCount = Math.floor(this.data.length / questionsPerCategory);
     const categories: Array<ICategoryData> = [];
-    for (let i = 0; i < categoriesCount; i++) {
-      const pictureUrl = `./public/img/pictures/${i*questionsPerCategory}.jpg`;
+    for (let i= 0; i < categoriesCount; i++){
+      const pictureUrl = `./public/img/pictures/${i* questionsPerCategory}.jpg`;
       const categoryData: ICategoryData = {
         name: i.toString(),
         picture: pictureUrl,
@@ -65,83 +68,73 @@ export class QuizDataModel {
     }
     return categories;
   }
-  public getPicturesQuestions(categoryIndex: number) {
+
+  public getPicturesQuestions(categoryIndex:number){
     const questionsPerCategory = this.questionsPerCategory;
     const result: Array<IPicturesQuestionData> = [];
-
-    for (let i = categoryIndex * questionsPerCategory; i < (categoryIndex + 1) * (questionsPerCategory); i++) {
-
-      const answers: Array<string> = []; 
+    for (let i= categoryIndex* questionsPerCategory; i< (categoryIndex+1)* (questionsPerCategory); i++){
+      const answers: Array<string> = [];
       const answersCount = 4;
-      const correctAnswersIndex = Math.floor(Math.random() * answersCount);
+      const correctAnswerIndex = Math.floor(Math.random() * answersCount);
       const correctAnswer = `./public/img/pictures/${this.data[i].picture}.jpg`;
-      for (let j = 0; j < answersCount; j++){
-        if (correctAnswerIndex == j) {
+      for(let j=0; j<answersCount; j++){
+        if (correctAnswerIndex == j){
           answers.push(correctAnswer)
         } else {
-          const randomImage = this.data[Math.floor(Math.random() * this.data.length)].picture;
+          const randomImage = this.data[Math.floor(Math.random()*this.data.length)].picture;
           const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
           answers.push(variantUrl);
         }
       }
       const question: IPicturesQuestionData = {
-
         artistName: this.data[i].author.en,
         answers: answers,
-        correctAnswerIndex: correctAnswersIndex
-       
+        correctAnswerIndex: correctAnswerIndex
       }
       result.push(question);
     }
     return result;
-
   }
-  public gеtArtistsQuestions(categoryIndex: number) {
+
+  public getArtistsQuestions(categoryIndex:number){
     const questionsPerCategory = this.questionsPerCategory;
     const result: Array<IArtistsQuestionData> = [];
-
-    for (let i = categoryIndex * questionsPerCategory; i < (categoryIndex + 1) * (questionsPerCategory); i++) {
-
-      const answers: Array<string> = []; 
+    for (let i= categoryIndex* questionsPerCategory; i< (categoryIndex+1)* (questionsPerCategory); i++){
+      const answers: Array<string> = [];
       const answersCount = 4;
-      const correctAnswersIndex = Math.floor(Math.random() * answersCount);
-      const correctAnswer = this.data[i].author.en;                                                
-        if (correctAnswerIndex == j) {
+      const correctAnswerIndex = Math.floor(Math.random() * answersCount);
+      const correctAnswer = this.data[i].author.en;
+      for(let j=0; j<answersCount; j++){
+        if (correctAnswerIndex == j){
           answers.push(correctAnswer)
         } else {
-          const randomName = this.data[Math.floor(Math.random() * this.data.length)].author;
-          const variantUrl = `./public/img/pictures/${randomImage}.jpg`;
+          const randomName = this.data[Math.floor(Math.random()*this.data.length)].author;
           answers.push(randomName.en);
         }
       }
       const question: IArtistsQuestionData = {
-
-        artistImgUrl:`./public/img/pictures/${this.data[i].picture}.jpg`;
+        artistImgUrl: `./public/img/pictures/${this.data[i].picture}.jpg`,
         answers: answers,
-        correctAnswerIndex: correctAnswersIndex
-       
+        correctAnswerIndex: correctAnswerIndex
       }
       result.push(question);
     }
     return result;
-
   }
-  private loadImagesData(url:string): Promise<Array<IPictureData>>{
-    return fetch(url).then(res => res.json()).then((imagesData: IImageDto) => {
 
-      const modelData: Array<IPictureData> = Object.keys(imagesData).map(it => {
+  private loadImagesData(url:string): Promise<Array<IPictureData>>{
+    return fetch(url).then(res=>res.json()).then((imagesData: IImagesDto)=>{
+      const modelData: Array<IPictureData> = Object.keys(imagesData).map(it=>{
         const item = imagesData[it];
         const record: IPictureData = {
           year: Number(item.year),
           picture: Number(item.picture),
           author: item.author,
           name: item.name
-
         };
         return record;
       });
       return modelData;
     });
   }
-
 }
