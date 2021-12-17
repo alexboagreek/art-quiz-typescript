@@ -5,15 +5,39 @@ interface IQuizSettings {
   time: number;
   timeEnable: boolean;
 }
+const defaultSettings: IQuizSettings = {
+  time: 10,
+  timeEnable: false
+  
+}
 export class SettingsModel {
   
   settings: IQuizSettings;
   constructor() {
 
   }
-
+ 
   loadFromStorage() {
-    const data = JSON.parse(localStorage.getItem('settings'));
+    const storageData = localStorage.getItem('settings');
+    const checkStorageData = (data:string|null) => {
+      return !!data;
+    }
+    if (!checkStorageData(storageData)) {
+      this.settings = defaultSettings;
+    } else {
+      const data: IQuizSettings = JSON.parse(storageData);
+      this.settings = data;
+    }
+  
+  }
+
+  setData(data: IQuizSettings) {
+    this.settings = data;
+    this.saveToStorage();    
+  }
+
+  saveToStorage(){
+    localStorage.setItem('settings', JSON.stringify(this.settings));
   }
 
 }

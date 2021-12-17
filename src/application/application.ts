@@ -1,5 +1,5 @@
 import Control from "../common/control";
-import { SettingsPage } from './settingsPage';
+import { SettingsModel, SettingsPage } from './settingsPage';
 import { StartPage } from './startPage';
 import { CategoriesPage } from './categoriesPage';
 import { GameFieldPage } from './gameFieldPage';
@@ -7,6 +7,7 @@ import { GameOverPage } from './gameOverPage';
 import { QuizDataModel } from './quizDataModel';
 
 export class Application extends Control {
+
   model: QuizDataModel;
   constructor(parentNode: HTMLElement) {
     super(parentNode);
@@ -21,6 +22,7 @@ export class Application extends Control {
     })
    
   }
+
   private gameCycle(gameName: string, categoryIndex: number) {
     let questions: Array<any>;
     if (gameName == 'artists') {
@@ -32,6 +34,7 @@ export class Application extends Control {
     } else {
       throw new Error('game type is not find');
     }
+
     const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, );
         gameField.onHome = () => {
           gameField.destroy();
@@ -67,6 +70,7 @@ export class Application extends Control {
       this.gameCycle(gameName, index)   
     }
   }
+
   private mainCycle() {
     const startPage = new StartPage(this.node);
     startPage.onGameSelect = (gameName) => {
@@ -75,15 +79,20 @@ export class Application extends Control {
     }
 
     startPage.onSettings = () => {
+
       startPage.destroy();
-      const settingsPage = new SettingsPage(this.node);
+      const settingsModel = new SettingsModel();
+      settingsModel.loadFromStorage();
+      const settingsPage = new SettingsPage(this.node, settingsModel.settings);
         settingsPage.onBack = () => {
           settingsPage.destroy();
           this.mainCycle();
       }
+
       settingsPage.onSave = (settings) => {
-        console.log(settings)
+        // console.log(settings)
         settingsPage.destroy();
+        settingsModel.setData(settings);
         this.mainCycle();
       }
     }
