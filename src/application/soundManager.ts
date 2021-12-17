@@ -1,3 +1,4 @@
+
 class SoundManagerClass{
   private baseURL = `./public/sound/`;
   private cache = new Map<string, Blob>();
@@ -5,7 +6,6 @@ class SoundManagerClass{
     'ok',
     'fail'
   ];
-  
   constructor(){
 
   }
