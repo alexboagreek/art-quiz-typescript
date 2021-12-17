@@ -7,6 +7,7 @@ import { IArtistsQuestionData, IPicturesQuestionData } from "./quizDataModel";
 interface IQuizOptions {
   gameName: string; 
   categoryIndex: number;
+  settings: IQuizSettings;
 }
 // interface IQuizResult {
 

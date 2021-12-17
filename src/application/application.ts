@@ -12,7 +12,9 @@ export class Application extends Control {
   constructor(parentNode: HTMLElement) {
     super(parentNode);
     // preloader bar
-    const preloader = new Control(this.node, 'div', '', 'loading...')
+    const preloader = new Control(this.node, 'div', '', 'loading...');
+    this.settingsModel = new SettingsModel();
+    this.settingsModel.loadFromStorage();
     this.model = new QuizDataModel();
     this.model.build().then(result => {
       preloader.destroy();
@@ -35,7 +37,7 @@ export class Application extends Control {
       throw new Error('game type is not find');
     }
 
-    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex }, );
+    const gameField = new GameFieldPage(this.node, { gameName: gameName, categoryIndex: categoryIndex, settings:ISettingsData }, );
         gameField.onHome = () => {
           gameField.destroy();
           this.mainCycle();
@@ -81,9 +83,8 @@ export class Application extends Control {
     startPage.onSettings = () => {
 
       startPage.destroy();
-      const settingsModel = new SettingsModel();
-      settingsModel.loadFromStorage();
-      const settingsPage = new SettingsPage(this.node, settingsModel.settings);
+     
+      const settingsPage = new SettingsPage(this.node, this.settingsModel.getData());
         settingsPage.onBack = () => {
           settingsPage.destroy();
           this.mainCycle();
@@ -91,8 +92,8 @@ export class Application extends Control {
 
       settingsPage.onSave = (settings) => {
         // console.log(settings)
-        settingsPage.destroy();
-        settingsModel.setData(settings);
+        this.settingsPage.destroy();
+        this.settingsModel.setData(settings);
         this.mainCycle();
       }
     }

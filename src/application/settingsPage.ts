@@ -1,7 +1,7 @@
 import Control from "../common/control";
 
 
-interface IQuizSettings {
+export interface IQuizSettings {
   time: number;
   timeEnable: boolean;
 }
@@ -12,7 +12,8 @@ const defaultSettings: IQuizSettings = {
 }
 export class SettingsModel {
   
-  settings: IQuizSettings;
+  private settings: IQuizSettings;
+
   constructor() {
 
   }
@@ -29,6 +30,10 @@ export class SettingsModel {
       this.settings = data;
     }
   
+  }
+
+  getData() {
+    return JSON.parse(JSON.stringify(this.settings));
   }
 
   setData(data: IQuizSettings) {
